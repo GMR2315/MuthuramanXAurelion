@@ -11,6 +11,7 @@ app.get("/",(req,res) => {
     res.send("Homepage");
 })
 
+
 app.get("/products",(req,res) => {
     
     //Data from frontened
@@ -20,7 +21,6 @@ app.get("/products",(req,res) => {
     // Data to frontend
     res.send("Products");
 })
-
 app.post("/products",(req,res) => {
     //Data from frontened
     
@@ -58,6 +58,15 @@ app.delete("/products",(req,res) => {
     
 });
 
+app.get("/order",(req,res) => {
+    
+    //Data from frontened
+    
+    //DB logic
+    
+    // Data to frontend
+    res.send("Order API Working");
+})
 
 
 
