@@ -15,4 +15,5 @@ model Student {
   dob           String
   phone_number  String
   image_url     String
+  email         String?
 }

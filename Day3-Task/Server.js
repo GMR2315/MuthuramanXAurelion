@@ -17,7 +17,11 @@ app.get("/students",async (req,res) => {
     // Data  from frontend
     
     //DB logic
-    const db_data = await prisma.student.findMany();
+    const db_data = await prisma.student.findMany({
+      orderBy :{
+          roll_no :'asc'
+      }
+    });
     
     
     //Data to backend
@@ -54,6 +58,7 @@ app.post("/students",async(req,res) =>{
             dob: data.dob,
             phone_number: data.phone_number,
             image_url: data.image_url,
+            email: data.email,
         },
     });
     // 3. Data to Frontend
@@ -78,6 +83,8 @@ app.put('/students/:roll_no', async (req, res) => {
       section: data.section,
       DOB: data.DOB,
       phone_number: data.phone_number,
+      image_url: data.image_url,
+      email: data.email
     },
   });
     
