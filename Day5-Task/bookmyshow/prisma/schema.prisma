@@ -1,0 +1,18 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Movie {
+  movie_id    String @id @default(cuid())
+  title       String
+  genre       String
+  language    String
+  imdb_rating String
+  age_rating  String
+  movie_image String
+}
