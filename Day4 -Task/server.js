@@ -11,26 +11,29 @@ app.get("/", (req, res) => {
 })
 
 //GET - http://localhost:3000/restaurants
-try{
+
     app.get("/restaurants", async (req,res) => {
-        //data from frontend
+        try{
+            //data from frontend
 
         //DB logic
         const db_data = await prisma.restaurant.findMany();
         //data to frontend
         res.status(200).json({messsage:"Restaurants fetched",data:db_data})
-    })
-
-}
-catch (err){
+        }
+        catch (err){
     res.status(500).json({messsage:"Internal server",error:err})
 }
+    })
+
+
+
     
 
 //GET - http://localhost:3000/restaurants/:restaurant_id
-try{
     app.get("/restaurants/:restaurant_id", async (req,res) => {
-        //data from frontend
+        try{
+            //data from frontend
         const {restaurant_id} = req.params
 
         //DB logic
@@ -41,19 +44,22 @@ try{
         });
         //data to frontend
         res.status(200).json({messsage:"specific Restaurants fetched",data:db_data})
-    })
-
-}
-catch (err){
+        }
+        catch (err){
     res.status(500).json({messsage:"Internal server",error:err})
 }
+    })
+
+
+
 
 
 
 //POST - http://localhost:3000/restaurants
-try{
+
     app.post("/restaurants", async (req,res) => {
-        //data from frontend
+        try{
+            //data from frontend
         const data = req.body
 
         //DB logic
@@ -62,12 +68,16 @@ try{
         });
         //data to frontend
         res.status(200).json({messsage:" Restaurants created",data:db_data})
-    })
-
-}
-catch (err){
+    }
+    catch (err){
     res.status(500).json({messsage:"Internal server",error:err})
 }
+    })
+        
+        
+
+
+
 
 
 
@@ -75,9 +85,10 @@ catch (err){
 
 //USE HEADERS TO PASS THE RESTAURANT_ID EXAMPLE:
 
-try{
+
     app.put("/restaurants",async (req,res) => {
-        //data from frontend
+        try{
+            //data from frontend
         const restaurant_id = req.headers.restaurant_id
         const data = req.body
 
@@ -90,21 +101,26 @@ try{
         });
         //data to frontend
         res.status(200).json({messsage:" Restaurants updated",data:db_data})
-    })
-
-}
-catch (err){
+    }
+        catch (err){
     res.status(500).json({messsage:"Internal server",error:err})
 }
+
+        })
+        
+
+
+
 
 
 //DELETE - http://localhost:3000/restaurants
 
-// USE QUERY TO PASS THE RESTAURANT ID EXAMPLE: http://localhost:3000/restaurants/?restaurant_id=cmhyjl3zr0000voggmhm6193x
+// USE QUERY TO PASS THE RESTAURANT ID EXAMPLE: http://localhost:3000/restaurants/?restaurant_id=cmi433ylw0000vowcne351sr8
 
-try{
+
     app.delete("/restaurants",async (req,res) => {
-        //data from frontend
+        try{
+            //data from frontend
         const data = req.query
         console.log(data)
         //DB logic
@@ -115,12 +131,14 @@ try{
         });
         //data to frontend
         res.status(200).json({messsage:" Restaurants Deleted"})
-    })
-
-}
-catch (err){
+        }
+        catch (err){
     res.status(500).json({messsage:"Internal server",error:err})
 }
+    })
+
+
+
 
 app.listen(3000, () => {
     console.log("server started");
