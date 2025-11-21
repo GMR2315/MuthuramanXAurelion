@@ -8,11 +8,48 @@ generator client {
 }
 
 model Movie {
-  movie_id    String @id @default(cuid())
-  title       String
-  genre       String
-  language    String
-  imdb_rating String
-  age_rating  String
-  movie_image String
+  movie_id      String        @id @default(cuid())
+  title         String
+  genre         String[]
+  language      Language
+  imdb_rating   String
+  certificate   Certificate
+  movie_image   String
+  movie_details MovieDetails?
+  show          Show[]
+}
+
+enum Certificate {
+  A
+  UA
+}
+
+model MovieDetails {
+  moviedetails_id String   @id @default(uuid())
+  director        String
+  actor           String[]
+  music           String
+  producer        String[]
+  story           String[]
+  movie_id        String   @unique
+  movie           Movie    @relation(fields: [movie_id], references: [movie_id])
+}
+
+enum Language {
+  Tamil
+  English
+  Telugu
+  Hindi
+}
+
+model Show {
+  show_id    String   @id @default(cuid())
+  start_time DateTime
+  date       DateTime
+  price      Float
+  language   Language
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  movie_id   String
+  movie      Movie    @relation(fields: [movie_id], references: [movie_id])
 }

@@ -138,9 +138,20 @@ app.delete("/movies/:movie_id",async(req,res) => {
         res.status(200).json({message:"Movie Deleted"})
 
     }
-    catch(err) {
-        res.status(404).json({message:"Not Found"});
+     catch (err) {
+    console.error("DELETE ERROR:", err); // shows full Prisma error in console
+
+    // Prisma specific error when record does not exist
+    if (err.code === "P2025") {
+      return res.status(404).json({ message: "Movie not found" });
     }
+
+    // Any other unexpected error
+    res.status(500).json({
+      message: "Internal server error",
+      error: err.message,
+    });
+  }
 })
 
 

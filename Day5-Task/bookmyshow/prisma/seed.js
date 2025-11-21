@@ -1,119 +1,167 @@
-import { PrismaClient } from '@prisma/client';
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.movie.createMany({
-    data: [
-      // 🇮🇳 Indian Movies
-      {
-        title: "Kalki 2898 AD",
-        genre: "Sci-Fi, Action",
-        language: "Telugu, Hindi",
-        imdb_rating: "8.3",
-        age_rating: "UA",
-        movie_image: "https://assets.bookmyshow.com/movies/kalki2898ad.jpg"
-      },
-      {
-        title: "Leo",
-        genre: "Action, Thriller",
-        language: "Tamil",
-        imdb_rating: "7.9",
-        age_rating: "UA",
-        movie_image: "https://assets.bookmyshow.com/movies/leo.jpg"
-      },
-      {
-        title: "Jawan",
-        genre: "Action, Drama",
-        language: "Hindi",
-        imdb_rating: "7.2",
-        age_rating: "UA",
-        movie_image: "https://assets.bookmyshow.com/movies/jawan.jpg"
-      },
-      {
-        title: "Salaar: Part 1 – Ceasefire",
-        genre: "Action, Crime",
-        language: "Telugu",
-        imdb_rating: "7.5",
-        age_rating: "A",
-        movie_image: "https://assets.bookmyshow.com/movies/salaar.jpg"
-      },
-      {
-        title: "Kantara",
-        genre: "Drama, Action",
-        language: "Kannada, Hindi",
-        imdb_rating: "8.3",
-        age_rating: "UA",
-        movie_image: "https://assets.bookmyshow.com/movies/kantara.jpg"
-      },
-      {
-        title: "Kaantha",
-        genre: "Drama",
-        language: "Tamil",
-        imdb_rating: "N/A",
-        age_rating: "UA",
-        movie_image: "https://assets.bookmyshow.com/movies/kaantha.jpg"
-      },
 
-      // 🎥 Hollywood Movies
-      {
-        title: "Oppenheimer",
-        genre: "Biography, Drama",
-        language: "English",
-        imdb_rating: "8.4",
-        age_rating: "A",
-        movie_image: "https://assets.bookmyshow.com/movies/oppenheimer.jpg"
+  // ⭐ Helper Function: Create Movie with Details + a Show
+  async function createMovie(data) {
+    const movie = await prisma.movie.create({
+      data: {
+        title: data.title,
+        genre: data.genre,
+        language: data.language,
+        imdb_rating: data.imdb_rating,
+        certificate: data.certificate,
+        movie_image: data.movie_image,
       },
-      {
-        title: "Barbie",
-        genre: "Comedy, Fantasy",
-        language: "English",
-        imdb_rating: "6.8",
-        age_rating: "UA",
-        movie_image: "https://assets.bookmyshow.com/movies/barbie.jpg"
+    });
+
+    // Movie Details
+    await prisma.movieDetails.create({
+      data: {
+        director: data.director,
+        actor: data.actor,
+        music: data.music,
+        producer: data.producer,
+        story: data.story,
+        movie_id: movie.movie_id,
       },
-      {
-        title: "Deadpool & Wolverine",
-        genre: "Action, Comedy",
-        language: "English",
-        imdb_rating: "8.0",
-        age_rating: "A",
-        movie_image: "https://assets.bookmyshow.com/movies/deadpoolwolverine.jpg"
+    });
+
+    // One sample show
+    await prisma.show.create({
+      data: {
+        start_time: new Date("2025-02-20T10:00:00"),
+        date: new Date("2025-02-20"),
+        price: data.price,
+        language: data.language,
+        movie_id: movie.movie_id,
       },
-      {
-        title: "Dune: Part Two",
-        genre: "Sci-Fi, Adventure",
-        language: "English",
-        imdb_rating: "8.9",
-        age_rating: "UA",
-        movie_image: "https://assets.bookmyshow.com/movies/dune2.jpg"
-      },
-      {
-        title: "Spider-Man: Across the Spider-Verse",
-        genre: "Animation, Action",
-        language: "English",
-        imdb_rating: "8.7",
-        age_rating: "UA",
-        movie_image: "https://assets.bookmyshow.com/movies/spiderverse2.jpg"
-      },
-      {
-        title: "Avatar: The Way of Water",
-        genre: "Sci-Fi, Adventure",
-        language: "English",
-        imdb_rating: "7.7",
-        age_rating: "UA",
-        movie_image: "https://assets.bookmyshow.com/movies/avatar2.jpg"
-      }
-    ]
+    });
+
+    return movie;
+  }
+
+  // -------------------------------------------------------
+  // ⭐ Tamil Movies
+  // -------------------------------------------------------
+  await createMovie({
+    title: "Kaantha",
+    genre: ["Action", "Thriller"],
+    language: "Tamil",
+    imdb_rating: "8.3",
+    certificate: "UA",
+    movie_image:
+      "https://upload.wikimedia.org/kaantha.jpg",
+
+    director: "Lokesh Kanagaraj",
+    actor: ["Suriya", "Jagapathi Babu"],
+    music: "Anirudh",
+    producer: ["Seven Screen Studio"],
+    story: ["Revenge", "Village backdrop", "Mass entertainment"],
+
+    price: 180,
   });
 
-  console.log("🎬 Movies (Indian + Hollywood) seeded successfully!");
+  await createMovie({
+    title: "Vikram",
+    genre: ["Action", "Crime"],
+    language: "Tamil",
+    imdb_rating: "8.4",
+    certificate: "UA",
+    movie_image:
+      "https://upload.wikimedia.org/vikram.jpg",
+
+    director: "Lokesh Kanagaraj",
+    actor: ["Kamal Haasan", "Vijay Sethupathi", "Fahadh Faasil"],
+    music: "Anirudh",
+    producer: ["Raaj Kamal Films"],
+    story: ["Undercover mission", "Drug mafia"],
+
+    price: 200,
+  });
+
+  await createMovie({
+    title: "Leo",
+    genre: ["Action", "Drama"],
+    language: "Tamil",
+    imdb_rating: "7.9",
+    certificate: "UA",
+    movie_image:
+      "https://upload.wikimedia.org/leo.jpg",
+
+    director: "Lokesh Kanagaraj",
+    actor: ["Vijay", "Trisha"],
+    music: "Anirudh",
+    producer: ["Seven Screen Studio"],
+    story: ["Past secrets", "Family drama", "Action thriller"],
+
+    price: 220,
+  });
+
+  // -------------------------------------------------------
+  // ⭐ Hollywood Movies
+  // -------------------------------------------------------
+  await createMovie({
+    title: "Inception",
+    genre: ["Sci-Fi", "Thriller"],
+    language: "English",
+    imdb_rating: "8.8",
+    certificate: "UA",
+    movie_image:
+      "https://upload.wikimedia.org/inception.jpg",
+
+    director: "Christopher Nolan",
+    actor: ["Leonardo DiCaprio", "Tom Hardy", "Elliot Page"],
+    music: "Hans Zimmer",
+    producer: ["Syncopy"],
+    story: ["Dream invasion", "Mind control", "Heist"],
+
+    price: 250,
+  });
+
+  await createMovie({
+    title: "Interstellar",
+    genre: ["Sci-Fi", "Drama"],
+    language: "English",
+    imdb_rating: "8.6",
+    certificate: "UA",
+    movie_image:
+      "https://upload.wikimedia.org/interstellar.jpg",
+
+    director: "Christopher Nolan",
+    actor: ["Matthew McConaughey", "Anne Hathaway"],
+    music: "Hans Zimmer",
+    producer: ["Syncopy", "Legendary Pictures"],
+    story: ["Space exploration", "Time dilation", "Family bond"],
+
+    price: 280,
+  });
+
+  await createMovie({
+    title: "Avengers: Endgame",
+    genre: ["Action", "Sci-Fi"],
+    language: "English",
+    imdb_rating: "8.4",
+    certificate: "UA",
+    movie_image:
+      "https://upload.wikimedia.org/endgame.jpg",
+
+    director: "Russo Brothers",
+    actor: ["Robert Downey Jr.", "Chris Evans", "Scarlett Johansson"],
+    music: "Alan Silvestri",
+    producer: ["Marvel Studios"],
+    story: ["Time travel", "Universe fight", "Sacrifice"],
+
+    price: 300,
+  });
+
+  console.log("🎉 Seeding Complete!");
 }
 
 main()
+  .then(() => prisma.$disconnect())
   .catch((e) => {
     console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
+    return prisma.$disconnect();
   });
