@@ -7,20 +7,20 @@ const fetchAllStudentService = async () => {
             roll_no: 'asc'
         }
     });
-    
 
-} ;
 
-const fetchOneStudentService = async() => {
+};
+
+const fetchOneStudentService = async (roll_no) => {
     return await prisma.student.findUnique({
         where: { roll_no: roll_no },
     });
-    
-    
+
+
 }
 
-const createStudentService = async(data) => {
-      return await prisma.student.create({
+const createStudentService = async (data) => {
+    return await prisma.student.create({
         data: {
             roll_no: data.roll_no,
             name: data.name,
@@ -32,37 +32,37 @@ const createStudentService = async(data) => {
             email: data.email,
         },
     });
-   
+
 
 }
 
-const updateStudentService = async(data) =>{
-      return await prisma.student.update({
-            where: {
-                roll_no: roll_no,
-            },
-            data: {
-                roll_no: data.roll_no,
-                class: data.class,
-                name: data.name,
-                section: data.section,
-                DOB: data.DOB,
-                phone_number: data.phone_number,
-                image_url: data.image_url,
-                email: data.email
-            },
-        });
-        
+const updateStudentService = async (roll_no,data) => {
+    return await prisma.student.update({
+        where: {
+            roll_no: roll_no,
+        },
+        data: {
+            roll_no: data.roll_no,
+            class: data.class,
+            name: data.name,
+            section: data.section,
+            DOB: data.DOB,
+            phone_number: data.phone_number,
+            image_url: data.image_url,
+            email: data.email
+        },
+    });
+
 
 }
 
-const deleteStudentService = async(data) =>{
+const deleteStudentService = async (roll_no) => {
     return await prisma.student.delete({
         where: {
             roll_no: roll_no,
         },
     });
-    
+
 
 }
 

@@ -7,7 +7,7 @@ const StudentRouter = express.Router();
 //GET - http://localhost:3000/students
 StudentRouter.get("/students", fetchAllStudentController)
 
-//GET - http://localhost:3000/students/:roll_no
+//GET - http://localhost:3000/students/:roll_no 
 StudentRouter.get('/students/:roll_no', fetchOneStudentController);
 
 
@@ -19,4 +19,4 @@ StudentRouter.put('/students/:roll_no', updateStudentController);
 
 StudentRouter.delete("/students/:roll_no", deleteStudentController);
 
-module.exports = StudentRouter;
+module.exports = StudentRouter; 
