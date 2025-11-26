@@ -62,7 +62,7 @@ const updateMovieController = async (req, res) => {
         const data = req.body
 
         //DB logic
-        const db_data = await updateMovieService(movie_id,data)
+        const db_data = await updateMovieService(movie_id, data)
 
     }
     catch (err) {
@@ -77,7 +77,8 @@ const deleteMovieController = async (req, res) => {
         const { movie_id } = req.params
 
         //DB logic
-        const db_data = await deleteMovieService()
+        const db_data = await deleteMovieService(movie_id);
+        //Data to frontend
         res.status(200).json({ message: "Movie Deleted" })
 
     }

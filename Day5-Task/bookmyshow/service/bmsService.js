@@ -29,10 +29,15 @@ const updateMovieService =async(movie_id,data) => {
             data: data
         })
         
-
+  
 }
 
-const deleteMovieService = async(data) =>{
+const deleteMovieService = async(movie_id) =>{
+    return await prisma.movie.deleteMany({
+        where :{
+            movie_id : movie_id
+        }
+    })
 
 }
 
