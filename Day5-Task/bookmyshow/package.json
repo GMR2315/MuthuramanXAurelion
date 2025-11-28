@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts"
   },
   "author": "",
   "license": "ISC",
@@ -14,7 +14,16 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "morgan": "^1.10.1",
-    "nodemon": "^3.1.11",
+    "nodemon": "^3.1.11", 
+
     "prisma": "^6.19.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^24.10.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
   }
 }

@@ -1,7 +1,7 @@
-const express = require("express")
+import express from "express";
 const BmsRouter = express.Router();
 
-const  { fetchAllMoviesController, fetchOneMovieController, createMovieController, updateMovieController, deleteMovieController } = require("../controller/bmsController")
+import { fetchAllMoviesController, fetchOneMovieController, createMovieController, updateMovieController, deleteMovieController } from "../controller/bmsController";
 
 //GET - http://localhost:3000/movies
 BmsRouter.get("/movies", fetchAllMoviesController)
@@ -29,4 +29,4 @@ BmsRouter.put("/movies/:movie_id", updateMovieController)
 ////PUT - http://localhost:3000/movies/:movie_id
 BmsRouter.delete("/movies/:movie_id", deleteMovieController)
 
-module.exports = BmsRouter
+export default BmsRouter
