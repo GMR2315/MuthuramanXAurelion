@@ -1,4 +1,31 @@
+const z = require("zod")
 const { fetchAllRestaurantService, fetchOneRestaurantService, createRestaurantService, updateRestaurantService, deleteRestaurantService} = require("../service/restaurantService")
+
+const restaurantByIdSchema = z.object({
+    restaurant_id: z.string(),
+});
+
+const restaurantCreateSchema = z.object({
+    restaurant_title: z.string(),
+    rating: z.number(),          
+    delivery_time: z.string(),
+    location: z.string(),
+    cuisines: z.string(),
+    image: z.string().url(),
+});
+
+const restaurantUpdateSchema = z.object({
+    restaurant_title: z.string(),
+    rating: z.number(),
+    delivery_time: z.string(),
+    location: z.string(),
+    cuisines: z.string(),
+    image: z.string().url(),
+});
+
+const restaurantDeleteSchema = z.object({
+    restaurant_id: z.string(),
+});
 
 const fetchAllRestaurantController = async (req, res) => {
     try {
@@ -10,13 +37,13 @@ const fetchAllRestaurantController = async (req, res) => {
         res.status(200).json({ messsage: "Restaurants fetched", data: db_data })
     } 
     catch (err) {
-    console.error(err);  // logs full error in terminal
+    console.error(err);  
     
     res.status(500).json({
         message: "Internal server error",
-        error: err.message,        // human readable
-        code: err.code,            // Prisma error code
-        meta: err.meta             // extra info (optional)
+        error: err.message,        
+        code: err.code,            
+        meta: err.meta            
     });
 }
 };
@@ -24,7 +51,7 @@ const fetchAllRestaurantController = async (req, res) => {
 const fetchOneRestaurantController = async (req, res) => {
     try {
         //data from frontend
-        const { restaurant_id } = req.params
+        const { restaurant_id } = restaurantByIdSchema.parse(req.params)
 
         //DB logic
         const db_data = await fetchOneRestaurantService(restaurant_id)
@@ -39,7 +66,7 @@ const fetchOneRestaurantController = async (req, res) => {
 const  createRestaurantController =  async (req, res) => {
     try {
         //data from frontend
-        const data = req.body
+        const data = restaurantCreateSchema.parse(req.body)
 
         //DB logic
         const db_data = await createRestaurantService(data)
@@ -55,7 +82,7 @@ const updateRestaurantController = async (req, res) => {
     try {
         //data from frontend
         const restaurant_id = req.headers.restaurant_id
-        const data = req.body
+        const data = restaurantUpdateSchema.parse(req.body)
 
         //DB logic
         const db_data = await updateRestaurantService(restaurant_id,data)
@@ -71,7 +98,7 @@ const updateRestaurantController = async (req, res) => {
 const deleteRestaurantController = async (req, res) => {
     try {
         //data from frontend
-        const data = req.query
+        const data = restaurantDeleteSchema.parse(req.query)
         console.log(data)
         //DB logic
         const db_data = await deleteRestaurantService(data)

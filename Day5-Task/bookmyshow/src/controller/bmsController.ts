@@ -1,7 +1,32 @@
 import { Request, Response } from "express";
-
-
+import {z} from "zod"
 import { fetchAllMoviesService, fetchOneMovieService, createMovieService, updateMovieService, deleteMovieService } from "../service/bmsService";
+
+ const movieByIdSchema = z.object({
+    movie_id: z.string(), 
+});
+
+ const movieCreateSchema = z.object({
+    title: z.string(),
+    genre: z.array(z.string()),
+    language: z.enum(["Tamil", "English", "Telugu", "Hindi"]),
+    imdb_rating: z.string(),
+    certificate: z.enum(["A", "UA"]),
+    movie_image: z.string().url(),
+});
+
+ const movieUpdateSchema = z.object({
+    title: z.string(),
+    genre: z.array(z.string()),
+    language: z.enum(["Tamil", "English", "Telugu", "Hindi"]),
+    imdb_rating: z.string(),
+    certificate: z.enum(["A", "UA"]),
+    movie_image: z.string().url(),
+});
+
+const movieDeleteSchema = z.object({
+    movie_id: z.string(),
+});
 
 
 const fetchAllMoviesController = async (req: Request, res: Response): Promise<void> => {
@@ -28,7 +53,7 @@ const fetchAllMoviesController = async (req: Request, res: Response): Promise<vo
 const fetchOneMovieController = async (req: Request<{movie_id :string}>, res: Response): Promise<void> => {
     try {
         // data from frontend
-        const { movie_id } = req.params;
+        const { movie_id } = movieByIdSchema.parse(req.params);
 
         //DB logic
         const db_data = await fetchOneMovieService(movie_id)
@@ -52,7 +77,7 @@ const fetchOneMovieController = async (req: Request<{movie_id :string}>, res: Re
 const createMovieController = async (req: Request, res: Response): Promise<void> => {
     try {
         //data from frontend
-        const data = req.body;
+        const data = movieCreateSchema.parse(req.body);
 
         //DB logic
         const db_data = await createMovieService(data)
@@ -75,7 +100,7 @@ const updateMovieController = async (req: Request<{movie_id :string}>, res: Resp
     try {
         //data from frontend
         const { movie_id } = req.params
-        const data = req.body
+        const data = movieUpdateSchema.parse(req.body)
 
         //DB logic
         const db_data = await updateMovieService(movie_id, data)
@@ -97,7 +122,7 @@ const updateMovieController = async (req: Request<{movie_id :string}>, res: Resp
 const deleteMovieController = async (req: Request<{movie_id :string}>, res: Response): Promise<void> => {
     try {
         //data from frontend
-        const { movie_id } = req.params
+        const { movie_id } = movieDeleteSchema.parse(req.params)
 
         //DB logic
         const db_data = await deleteMovieService(movie_id);
